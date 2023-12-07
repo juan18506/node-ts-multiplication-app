@@ -4,6 +4,6 @@ import { yarg as argv } from './config/plugins/args.plugin';
   await main();
 })();
 
-async function main() {
+async function main(): Promise<void> {
   console.log(argv);
 }
