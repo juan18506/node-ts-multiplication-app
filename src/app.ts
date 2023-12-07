@@ -1,9 +1,12 @@
 import { yarg as argv } from './config/plugins/args.plugin';
+import { ServerApp } from './presentation/server-app';
 
 (async () => {
   await main();
 })();
 
 async function main(): Promise<void> {
-  console.log(argv);
+  const { b:base, l:limit, s:showTable } = argv;
+
+  ServerApp.run({ base, limit, showTable });
 }
