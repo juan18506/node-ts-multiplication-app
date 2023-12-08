@@ -6,7 +6,13 @@ import { ServerApp } from './presentation/server-app';
 })();
 
 async function main(): Promise<void> {
-  const { b:base, l:limit, s:showTable } = argv;
+  const { 
+    b: base, 
+    l: limit, 
+    s: showTable, 
+    n: fileName, 
+    d: fileDestination 
+  } = argv;
 
-  ServerApp.run({ base, limit, showTable });
+  ServerApp.run({ base, limit, showTable, fileName, fileDestination });
 }
