@@ -11,6 +11,10 @@ describe('Tests on server.app', () => {
     fileDestination: 'test-filedestination',
   }
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('should create ServerApp instance', async () => {
     const serverApp = new ServerApp();
 
@@ -38,6 +42,33 @@ describe('Tests on server.app', () => {
     expect(saveFileSpy).toHaveBeenCalledTimes(1);
     expect(saveFileSpy).toHaveBeenCalledWith({
       fileContent: expect.any(String),
+      fileDestination: options.fileDestination,
+      fileName: options.fileName,
+    });
+  });
+
+  test('should run ServerApp with custom values mocked', async () => {
+    const logMock = jest.fn();
+    const logErrorMock = jest.fn();
+    const createMock = jest.fn().mockReturnValue('1 x 2 = 2');
+    const saveFileMock = jest.fn().mockReturnValue(true);
+
+    console.log = logMock;
+    console.error = logErrorMock;
+    CreateTable.prototype.execute = createMock;
+    SaveFile.prototype.execute = saveFileMock;
+
+    ServerApp.run(options);
+
+    expect(logErrorMock).not.toHaveBeenCalled();
+    expect(logMock).toHaveBeenCalledWith('Server running...');
+    expect(logMock).toHaveBeenCalledWith('File created!');
+    expect(createMock).toHaveBeenCalledWith({
+      base: options.base,
+      limit: options.limit,
+    });
+    expect(saveFileMock).toHaveBeenCalledWith({
+      fileContent: '1 x 2 = 2',
       fileDestination: options.fileDestination,
       fileName: options.fileName,
     });
